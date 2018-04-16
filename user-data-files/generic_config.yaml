@@ -1,0 +1,19 @@
+#cloud-config
+
+# hostname: chef
+# package_update: true
+# package_upgrade: true
+
+# write_files:
+# -   content: |
+#       127.0.1.1 chef.nccdo.com chef
+#       127.0.0.1 localhost
+#     path: /etc/hosts
+#     owner: root:root
+#     permissions: '0644'
+
+# runcmd: 
+#  - 'wget https://packages.chef.io/files/stable/chef-server/12.16.14/ubuntu/16.04/chef-server-core_12.16.14-1_amd64.deb -P /tmp/'
+#  - 'dpkg -i /tmp/chef-server-core_12.16.14-1_amd64.deb'
+#  - 'PUBLIC_IP=`curl -sL http://169.254.169.254/latest/meta-data/public-ipv4`'
+#  - 'echo $PUBLIC_IP chef.nccdo.com chef >> /etc/hosts'
