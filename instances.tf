@@ -134,6 +134,8 @@ resource "aws_instance" "ncc_virtue-admin" {
     delete_on_termination = true
   }
 
+  disable_api_termination = true
+
   tags {
     Name = "Virtue BackEnd Admin"
   }
