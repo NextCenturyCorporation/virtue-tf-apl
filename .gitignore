@@ -1,4 +1,6 @@
 .DS_Store
-vpc/
 *.tfstate
 *.tfstate.backup
+.terraform/
+.terraform_old/
+vpc/.terraform

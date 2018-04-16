@@ -445,17 +445,6 @@ resource "aws_security_group" "virtue_internalports_dev_sg" {
     self      = "true"
   }
 
-  //12000-12012 for portfwarding for dom0
-  ingress {
-    from_port = 12000
-    to_port   = 12012
-    protocol  = "tcp"
-    self      = "true"
-  }
-
-  //80, 443, 2377, 17141, and 17504
-
-
   /*
   ingress {
     from_port = 0
@@ -473,5 +462,25 @@ resource "aws_security_group" "virtue_internalports_dev_sg" {
   }
   tags {
     Name = "virtue_internalports_dev_sg"
+  }
+}
+
+resource "aws_security_group" "virtue_testportforwarding_dev_sg" {
+  name        = "Port forwarding Test"
+  description = "Rules to open internal ports"
+  vpc_id      = "${module.vpc.vpc_id}"
+
+  ingress {
+    from_port   = 8001
+    to_port     = 8001
+    protocol    = "tcp"
+    cidr_blocks = ["50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
