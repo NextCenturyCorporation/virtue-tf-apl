@@ -1,45 +1,3 @@
-// !!!!!!!!!!!!!!!!This is for Virginia Tech - DO NOT DELETE!!!!!!!!!!!!!!!!!!!!! 
-resource "aws_instance" "all-c5IntegrationInstance" {
-  ami           = "ami-5529f22a"     //AMI with xen running on c5
-  instance_type = "c5.xlarge"
-  key_name      = "virginiatech_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${aws_security_group.virtue_internalports_dev_sg.id}"]
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = false
-  }
-
-  tags {
-    Name = "NCC Integration - All Teams"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-    ignore_changes  = ["user_data"]
-  }
-}
-
-resource "aws_instance" "all-IntegrationInstance_win" {
-  ami           = "ami-cab14db7" //ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180126
-  instance_type = "t2.micro"
-  key_name      = "vrtu"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_twosix_dev_sg.id}", "${ aws_security_group.rdp_sg.id}"]
-
-  tags {
-    Name = "NCC Integration Windows - All Teams"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
 // !!!!!!!!!!!!!!!!Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
 resource "aws_instance" "twoSix_virtue_1" {
   ami           = "ami-4ee34631"
@@ -148,7 +106,7 @@ resource "aws_instance" "ncc_virtue-admin" {
 // !!!!!!!!!!!!!!!!End of Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
 
 resource "aws_instance" "ncc_win_integration" {
-  ami           = "ami-cfcd68b0" //ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180126
+  ami           = "ami-cfcd68b0"
   instance_type = "m5.large"
   key_name      = "vrtu"
 
