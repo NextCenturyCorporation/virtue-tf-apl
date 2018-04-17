@@ -7,7 +7,6 @@ resource "aws_instance" "twoSix_virtue_1" {
   subnet_id              = "${module.vpc.public_1a_id}"
   vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
 
-  #user_data = "${file("./user-data-files/generic_config.yaml")}"
   root_block_device {
     volume_type           = "gp2"
     volume_size           = "120"
@@ -31,7 +30,6 @@ resource "aws_instance" "twoSix_virtue_2" {
   subnet_id              = "${module.vpc.public_1a_id}"
   vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
 
-  #user_data = "${file("./user-data-files/generic_config.yaml")}"
   root_block_device {
     volume_type           = "gp2"
     volume_size           = "120"
@@ -44,8 +42,6 @@ resource "aws_instance" "twoSix_virtue_2" {
 
   lifecycle {
     prevent_destroy = false
-
-    #    ignore_changes = ["user_data"]
   }
 }
 
@@ -57,7 +53,6 @@ resource "aws_instance" "twoSix_virtue_3" {
   subnet_id              = "${module.vpc.public_1a_id}"
   vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
 
-  #user_data = "${file("./user-data-files/generic_config.yaml")}"
   root_block_device {
     volume_type           = "gp2"
     volume_size           = "120"
@@ -77,7 +72,7 @@ resource "aws_instance" "twoSix_virtue_3" {
 
 // !!!!!!!!!!!!!!!!This is for Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
 resource "aws_instance" "ncc_virtue-admin" {
-  ami           = "ami-71b7750b" //ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180126
+  ami           = "ami-4f87273" // This ami is preinstalled with virtue-admin base ami is "ami-71b7750b" 
   instance_type = "t2.xlarge"
   key_name      = "vrtu"
 
@@ -104,28 +99,6 @@ resource "aws_instance" "ncc_virtue-admin" {
 }
 
 // !!!!!!!!!!!!!!!!End of Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
-
-resource "aws_instance" "ncc_win_integration" {
-  ami           = "ami-cfcd68b0"
-  instance_type = "m5.large"
-  key_name      = "vrtu"
-
-  #vpc_security_group_ids = ["sg-dd5104af"] 
-  subnet_id = "${module.vpc.public_1a_id}"
-
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_twosix_dev_sg.id}", "${ aws_security_group.rdp_sg.id}", "${aws_security_group.virtue_VTinternalports_dev_sg.id}"]
-
-  #user_data = "${file("./user-data-files/generic_config.yaml")}"
-
-  tags {
-    Name = "NCC TestX Windows - Wole"
-  }
-  lifecycle {
-    prevent_destroy = false
-
-    #    ignore_changes = ["user_data"]
-  }
-}
 
 resource "aws_route53_record" "sensing-api" {
   zone_id = "${aws_route53_zone.savior.zone_id}"
