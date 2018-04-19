@@ -72,7 +72,7 @@ resource "aws_instance" "twoSix_virtue_3" {
 
 // !!!!!!!!!!!!!!!!This is for Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
 resource "aws_instance" "ncc_virtue-admin" {
-  ami           = "ami-4f87273" // This ami is preinstalled with virtue-admin base ami is "ami-71b7750b" 
+  ami           = "ami-71b7750b" // This ami is preinstalled with virtue-admin base ami is "ami-71b7750b" there is a new one  ami-4f87273
   instance_type = "t2.xlarge"
   key_name      = "vrtu"
 
