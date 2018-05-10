@@ -445,7 +445,7 @@ resource "aws_security_group" "virtue_internalports_dev_sg" {
     self      = "true"
   }
 
-  //12000-12012 for portfwarding for dom0
+  //Port 8001 if the ssh port into domU
   ingress {
     from_port = 8001
     to_port   = 8010
@@ -453,14 +453,12 @@ resource "aws_security_group" "virtue_internalports_dev_sg" {
     self      = "true"
   }
 
-  /*
   ingress {
     from_port = 0
     to_port   = 0
     protocol  = -1
     self      = "true"
   }
-  */
 
   egress {
     from_port   = 0
@@ -468,6 +466,7 @@ resource "aws_security_group" "virtue_internalports_dev_sg" {
     protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   tags {
     Name = "virtue_internalports_dev_sg"
   }
@@ -478,6 +477,7 @@ resource "aws_security_group" "virtue_testportforwarding_dev_sg" {
   description = "Rules to open internal ports"
   vpc_id      = "${module.vpc.vpc_id}"
 
+  /*Port 8001 if the ssh port into domU*/
   ingress {
     from_port = 8001
     to_port   = 8001
