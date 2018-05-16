@@ -168,8 +168,8 @@ resource "aws_instance" "ncc_virtue-admin" {
   }
 }
 
-/*
-resource "aws_instance" "ncc_virtue-admin1" {
+// !!!!!!!!!!!!!!!!This is for Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
+resource "aws_instance" "ncc_virtue-admin2" {
   ami           = "ami-c6ad16b9" // This ami is preinstalled with virtue-admin base ami is "ami-71b7750b" there is a new one  ami-4f87273
   instance_type = "t2.xlarge"
   key_name      = "vrtu"
@@ -177,7 +177,7 @@ resource "aws_instance" "ncc_virtue-admin1" {
   subnet_id = "${module.vpc.public_1a_id}"
 
   //Note that Virtue Admin needs ports 8080 and 8443.
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
+  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
 
   root_block_device {
     volume_type           = "gp2"
@@ -186,48 +186,7 @@ resource "aws_instance" "ncc_virtue-admin1" {
   }
 
   tags {
-    Name = "Virtue BackEnd Admin - virtue-admin"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-*/
-// !!!!!!!!!!!!!!!!End of Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
-
-resource "aws_instance" "ncc_virtue_desktop_test_win" {
-  ami           = "ami-90d563ef" //ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180126
-  instance_type = "t2.large"
-  key_name      = "vrtu"
-
-  #vpc_security_group_ids = ["sg-dd5104af"] 
-  subnet_id = "${module.vpc.public_1a_id}"
-
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_twosix_dev_sg.id}", "${ aws_security_group.rdp_sg.id}", "${aws_security_group.virtue_VTinternalports_dev_sg.id}"]
-
-  tags {
-    Name = "NCC Virtue Desktop Test - Wole"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-resource "aws_instance" "ncc_virtue_desktop_test_win2" {
-  ami                         = "ami-90d563ef" //ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20180126
-  instance_type               = "t2.large"
-  key_name                    = "vrtu"
-  associate_public_ip_address = "true"
-
-  #vpc_security_group_ids = ["sg-dd5104af"] 
-  subnet_id = "${module.vpc.public_1a_id}"
-
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_twosix_dev_sg.id}", "${ aws_security_group.rdp_sg.id}", "${aws_security_group.virtue_VTinternalports_dev_sg.id}"]
-
-  tags {
-    Name = "NCC Virtue Desktop Test - Wole 2"
+    Name = "Virtue BackEnd Admin 2"
   }
 
   lifecycle {
@@ -261,7 +220,11 @@ resource "aws_route53_record" "sensing-kafka" {
 
 //!!!!!!!!!!!!!!!!! End of TwoSix Instance !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 
+
+/*
 resource "aws_eip" "virtue_admin_eip" {
   instance = "${aws_instance.ncc_virtue-admin.id}"
   vpc      = true
 }
+*/
+
