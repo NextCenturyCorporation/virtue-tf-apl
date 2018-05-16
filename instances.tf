@@ -143,32 +143,6 @@ resource "aws_instance" "twoSix_virtue_3a" {
 //!!!!!!!!!!!!!!!End of Sensor Monitor !!!!!!!!!!!!!!!!!!!!!!!!!
 
 // !!!!!!!!!!!!!!!!This is for Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
-resource "aws_instance" "ncc_virtue-admin" {
-  ami           = "ami-71b7750b" // This ami is preinstalled with virtue-admin base ami is "ami-71b7750b" there is a new one  ami-4f87273
-  instance_type = "t2.xlarge"
-  key_name      = "vrtu"
-
-  subnet_id = "${module.vpc.public_1a_id}"
-
-  //Note that Virtue Admin needs ports 8080 and 8443.
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Virtue BackEnd Admin"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-// !!!!!!!!!!!!!!!!This is for Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
 resource "aws_instance" "ncc_virtue-admin2" {
   ami           = "ami-c6ad16b9" // This ami is preinstalled with virtue-admin base ami is "ami-71b7750b" there is a new one  ami-4f87273
   instance_type = "t2.xlarge"
