@@ -77,7 +77,7 @@ resource "aws_instance" "twoSix_virtue_1a" {
   key_name      = "twosix_ec2"
 
   subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
 
   root_block_device {
     volume_type           = "gp2"
@@ -100,7 +100,7 @@ resource "aws_instance" "twoSix_virtue_2a" {
   key_name      = "twosix_ec2"
 
   subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
 
   root_block_device {
     volume_type           = "gp2"
@@ -123,7 +123,7 @@ resource "aws_instance" "twoSix_virtue_3a" {
   key_name      = "twosix_ec2"
 
   subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
 
   root_block_device {
     volume_type           = "gp2"
@@ -150,7 +150,8 @@ resource "aws_instance" "ncc_virtue-admin2" {
 
   subnet_id = "${module.vpc.public_1a_id}"
 
-  //Note that Virtue Admin needs ports 8080 and 8443.
+  //Note sg-c1d38a88 is the open-vpn security group created by APL. We need to add this manually. 
+  //not
   vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
 
   root_block_device {
@@ -173,7 +174,7 @@ resource "aws_route53_record" "sensing-api" {
   name    = "sensing-api.savior.internal"
   type    = "CNAME"
   ttl     = "300"
-  records = ["${aws_instance.twoSix_virtue_1.private_dns}"]
+  records = ["${aws_instance.twoSix_virtue_1a.private_dns}"]
 }
 
 resource "aws_route53_record" "sensing-ca" {
@@ -181,7 +182,7 @@ resource "aws_route53_record" "sensing-ca" {
   name    = "sensing-ca.savior.internal"
   type    = "CNAME"
   ttl     = "300"
-  records = ["${aws_instance.twoSix_virtue_1.private_dns}"]
+  records = ["${aws_instance.twoSix_virtue_1a.private_dns}"]
 }
 
 resource "aws_route53_record" "sensing-kafka" {
@@ -189,7 +190,7 @@ resource "aws_route53_record" "sensing-kafka" {
   name    = "sensing-kafka.savior.internal"
   type    = "CNAME"
   ttl     = "300"
-  records = ["${aws_instance.twoSix_virtue_1.private_dns}"]
+  records = ["${aws_instance.twoSix_virtue_1a.private_dns}"]
 }
 
 //!!!!!!!!!!!!!!!!! End of TwoSix Instance !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
