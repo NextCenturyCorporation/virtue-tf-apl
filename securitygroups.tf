@@ -453,6 +453,14 @@ resource "aws_security_group" "virtue_internalports_dev_sg" {
     self      = "true"
   }
 
+  //Port 8001 if the ssh port into domU
+  ingress {
+    from_port = 514
+    to_port   = 514
+    protocol  = "tcp"
+    self      = "true"
+  }
+
   ingress {
     from_port = 0
     to_port   = 0

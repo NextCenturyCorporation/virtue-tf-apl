@@ -1,76 +1,4 @@
 // !!!!!!!!!!!!!!!!Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
-resource "aws_instance" "twoSix_virtue_1" {
-  ami           = "ami-4ee34631"
-  instance_type = "m4.large"
-  key_name      = "twosix_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Virtue Sensor Monitor 1"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-resource "aws_instance" "twoSix_virtue_2" {
-  ami           = "ami-cce247b3"
-  instance_type = "m4.large"
-  key_name      = "twosix_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Virtue Sensor Monitor 2"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-resource "aws_instance" "twoSix_virtue_3" {
-  ami           = "ami-cce247b3"
-  instance_type = "m4.large"
-  key_name      = "twosix_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Virtue Sensor Monitor 3"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-// !!!!!!!!!!!!!!!!End of Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
-
-// !!!!!!!!!!!!!!!!Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
 resource "aws_instance" "twoSix_virtue_1a" {
   ami           = "ami-4ee34631"
   instance_type = "m4.large"
@@ -166,6 +94,32 @@ resource "aws_instance" "ncc_virtue-admin2" {
 
   lifecycle {
     prevent_destroy = false
+  }
+}
+
+resource "aws_instance" "all-c5IntegrationInstanceTemp" {
+  ami           = "ami-8aca50f5"     //ami-d7f30eaa This is the Virgin Tech AMI with xen running on c5
+  instance_type = "c5.xlarge"
+  key_name      = "virginiatech_ec2"
+
+  #vpc_security_group_ids = ["sg-dd5104af"] 
+  subnet_id              = "${module.vpc.public_1a_id}"
+  vpc_security_group_ids = ["sg-fb7adab3", "sg-c1d38a88", "${aws_security_group.default_sg.id}", "${aws_security_group.virtue_internalports_dev_sg.id}"]
+
+  #user_data = "${file("./user-data-files/generic_config.yaml")}"
+  root_block_device {
+    volume_type           = "gp2"
+    volume_size           = "120"
+    delete_on_termination = true
+  }
+
+  tags {
+    Name = "NCC Integration - Add applications"
+  }
+
+  lifecycle {
+    prevent_destroy = false
+    ignore_changes  = ["user_data"]
   }
 }
 
