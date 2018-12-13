@@ -1,11 +1,12 @@
 // !!!!!!!!!!!!!!!!Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
 resource "aws_instance" "twoSix_virtue_1a" {
-  ami           = "ami-4ee34631"
+  ami           = "ami-093cccde92b4591ee"
   instance_type = "m4.large"
   key_name      = "twosix_ec2"
 
   subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  #vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
 
   root_block_device {
     volume_type           = "gp2"
@@ -23,12 +24,13 @@ resource "aws_instance" "twoSix_virtue_1a" {
 }
 
 resource "aws_instance" "twoSix_virtue_2a" {
-  ami           = "ami-cce247b3"
+  ami           = "ami-09844b7ecd22e9753"
   instance_type = "m4.large"
   key_name      = "twosix_ec2"
 
   subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  #vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
 
   root_block_device {
     volume_type           = "gp2"
@@ -46,13 +48,13 @@ resource "aws_instance" "twoSix_virtue_2a" {
 }
 
 resource "aws_instance" "twoSix_virtue_3a" {
-  ami           = "ami-cce247b3"
+  ami           = "ami-09844b7ecd22e9753"
   instance_type = "m4.large"
   key_name      = "twosix_ec2"
 
   subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
-
+  #vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
   root_block_device {
     volume_type           = "gp2"
     volume_size           = "120"
@@ -80,8 +82,9 @@ resource "aws_instance" "ncc_virtue-admin2" {
 
   //Note sg-c1d38a88 is the open-vpn security group created by APL. We need to add this manually. 
   //not
-  vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
-
+  #vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
+  iam_instance_profile = "S3FullAccess"
   root_block_device {
     volume_type           = "gp2"
     volume_size           = "120"
@@ -157,3 +160,10 @@ resource "aws_eip" "virtue_admin_eip" {
 }
 */
 
+
+/*
+resource "aws_iam_role" "ec2_s3_access_role" {
+  name               = "S3_ReadOnlyX"
+  assume_role_policy = 
+}
+*/

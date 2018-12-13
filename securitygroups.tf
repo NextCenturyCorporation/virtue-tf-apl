@@ -3,6 +3,10 @@
 //Virginia office = 184.180.156.55/32,184.180.155.46/32
 //Jenkins Test server = 52.4.168.79/32
 
+locals {
+  default_cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "52.4.168.79/32", "184.180.156.55/32", "184.180.155.46/32", "174.200.9.240/32", "52.87.36.141/32", "52.20.65.94/32"]
+}
+
 resource "aws_security_group" "default_sg" {
   name        = "default_sg_vpc"
   description = "Rules for SSH and egress"
@@ -12,7 +16,7 @@ resource "aws_security_group" "default_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "52.4.168.79/32", "184.180.156.55/32", "184.180.155.46/32", "174.200.9.240/32", "52.87.36.141/32", "52.20.65.94/32"]
+    cidr_blocks = "${local.default_cidr_blocks}"
   }
 
   ingress {
@@ -43,14 +47,14 @@ resource "aws_security_group" "rdp_sg" {
     from_port   = 3389
     to_port     = 3389
     protocol    = "tcp"
-    cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "52.4.168.79/32", "184.180.156.55/32", "184.180.155.46/32", "174.200.9.240/32"]
+    cidr_blocks = "${local.default_cidr_blocks}"
   }
 
   ingress {
     from_port   = 3389
     to_port     = 3389
     protocol    = "udp"
-    cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "52.4.168.79/32", "184.180.156.55/32", "184.180.155.46/32", "174.200.9.240/32"]
+    cidr_blocks = "${local.default_cidr_blocks}"
   }
 
   ingress {
@@ -92,14 +96,14 @@ resource "aws_security_group" "virtue_admin_server_external_sg" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
+    cidr_blocks = "${local.default_cidr_blocks}"
   }
 
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
+    cidr_blocks = "${local.default_cidr_blocks}"
   }
 
   egress {
@@ -158,7 +162,7 @@ resource "aws_security_group" "virtue_postgreSQL_sg" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
+    cidr_blocks = "${local.default_cidr_blocks}"
   }
 
   tags {
@@ -493,6 +497,28 @@ resource "aws_security_group" "virtue_testportforwarding_dev_sg" {
 
     //cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
     //Temporary fix to get APL desktop working. Their ip 192.168.4.0  has an different external ip when it hits the virtue-xen box. 
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
+resource "aws_security_group" "virtue_open_all" {
+  name        = "Open All Ports"
+  description = "Rules to open internal ports"
+  vpc_id      = "${module.vpc.vpc_id}"
+
+  /*Port 8001 if the ssh port into domU*/
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
 
