@@ -1,3 +1,6 @@
+
+
+
 // !!!!!!!!!!!!!!!!Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
 resource "aws_instance" "twoSix_virtue_1a" {
   ami           = "ami-093cccde92b4591ee"
@@ -17,6 +20,8 @@ resource "aws_instance" "twoSix_virtue_1a" {
   tags {
     Name = "Sensor Monitor 1"
   }
+
+
 
   lifecycle {
     prevent_destroy = false
@@ -84,7 +89,7 @@ resource "aws_instance" "ncc_virtue-admin2" {
   //not
   #vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
   vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
-  iam_instance_profile = "S3FullAccess"
+  iam_instance_profile = "SAVIOR_ADMIN_SERVER"
   root_block_device {
     volume_type           = "gp2"
     volume_size           = "120"

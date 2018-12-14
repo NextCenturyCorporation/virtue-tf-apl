@@ -509,6 +509,32 @@ resource "aws_security_group" "virtue_testportforwarding_dev_sg" {
 }
 
 
+
+resource "aws_security_group" "SshForwardPorts" {
+  name        = "SshForwardPorts"
+  description = "Port forwarding 8001-8010"
+  vpc_id      = "${module.vpc.vpc_id}"
+
+  /*Port 8001 if the ssh port into domU*/
+  ingress {
+    from_port = 8001
+    to_port   = 8010
+    protocol  = "tcp"
+
+    //cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
+    //Temporary fix to get APL desktop working. Their ip 192.168.4.0  has an different external ip when it hits the virtue-xen box. 
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
 resource "aws_security_group" "virtue_open_all" {
   name        = "Open All Ports"
   description = "Rules to open internal ports"

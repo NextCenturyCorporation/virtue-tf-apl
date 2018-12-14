@@ -6,4 +6,3 @@ output "public_1a_id" {
   value = "${module.vpc.public_1a_id}"
 }
 
-

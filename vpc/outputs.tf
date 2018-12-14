@@ -9,3 +9,7 @@ output "public_1a_id" {
 output "igw_id" {
   value = "${aws_internet_gateway.gw.id}"
 }
+
+output "ngw_id" {
+  value = "${aws_nat_gateway.gw.id}"
+}
