@@ -19,12 +19,15 @@ resource "aws_route_table" "public_routes" {
 //directly to the interent. So we have to use a NAT getway. 
 resource "aws_route_table" "private_routes" {
   vpc_id = "${module.vpc.vpc_id}"
-
   route {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = "${module.vpc.ngw_id}"
   }
 
+
+  tags {
+    Name = "Route traffic to NAT Gateway"
+  }
 
 }
 

@@ -88,7 +88,8 @@ resource "aws_instance" "ncc_virtue-admin2" {
   //Note sg-c1d38a88 is the open-vpn security group created by APL. We need to add this manually. 
   //not
   #vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
-  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
+  
+  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}", "${aws_security_group.virtue_internalports_dev_sg.id}" ]
   iam_instance_profile = "SAVIOR_ADMIN_SERVER"
   root_block_device {
     volume_type           = "gp2"
@@ -106,15 +107,16 @@ resource "aws_instance" "ncc_virtue-admin2" {
 }
 
 resource "aws_instance" "all-c5IntegrationInstanceTemp" {
-  ami           = "ami-8aca50f5"     //ami-d7f30eaa This is the Virgin Tech AMI with xen running on c5
-  instance_type = "c5.xlarge"
+  ami           = "ami-00c5414b5cfc882d4"     
+  instance_type = "c5.large"
   key_name      = "virginiatech_ec2"
 
   #vpc_security_group_ids = ["sg-dd5104af"] 
-  subnet_id              = "${module.vpc.public_1a_id}"
+  subnet_id              = "subnet-3171986d" #"${module.vpc.public_1a_id}"
   vpc_security_group_ids = ["sg-fb7adab3", "sg-c1d38a88", "${aws_security_group.default_sg.id}", "${aws_security_group.virtue_internalports_dev_sg.id}"]
 
   #user_data = "${file("./user-data-files/generic_config.yaml")}"
+  associate_public_ip_address = true
   root_block_device {
     volume_type           = "gp2"
     volume_size           = "120"
@@ -122,7 +124,7 @@ resource "aws_instance" "all-c5IntegrationInstanceTemp" {
   }
 
   tags {
-    Name = "NCC Integration - Add applications"
+    Name = "NCC Integration Configure domU - Wole"
   }
 
   lifecycle {
@@ -130,6 +132,7 @@ resource "aws_instance" "all-c5IntegrationInstanceTemp" {
     ignore_changes  = ["user_data"]
   }
 }
+
 
 resource "aws_route53_record" "sensing-api" {
   zone_id = "${aws_route53_zone.savior.zone_id}"
