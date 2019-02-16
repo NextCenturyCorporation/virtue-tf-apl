@@ -83,6 +83,52 @@ resource "aws_security_group" "rdp_sg" {
   }
 }
 
+
+resource "aws_security_group" "default_rdp_sg" {
+  name        = "default_windows_rdp"
+  description = "allow windows rdp"
+  vpc_id      = "${module.vpc.vpc_id}"
+
+  ingress {
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
+    cidr_blocks = "${local.default_cidr_blocks}"
+  }
+
+  ingress {
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "udp"
+    cidr_blocks = "${local.default_cidr_blocks}"
+  }
+
+  ingress {
+    from_port = 3389
+    to_port   = 3389
+    protocol  = "tcp"
+    self      = "true"
+  }
+
+  ingress {
+    from_port = 3389
+    to_port   = 3389
+    protocol  = "udp"
+    self      = "true"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name = "Windows RDP"
+  }
+}
+
 /*
 This security group is for the Virtue Server running rest services. It needs port 
 8080, 8443 to be open. 
@@ -534,7 +580,8 @@ resource "aws_security_group" "SshForwardPorts" {
   }
 }
 
-
+//Name: virtue_open_all
+//Function: This security group opens all ports. Use for just debugging. 
 resource "aws_security_group" "virtue_open_all" {
   name        = "Open All Ports"
   description = "Rules to open internal ports"

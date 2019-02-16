@@ -24,31 +24,24 @@ resource "aws_route_table" "private_routes" {
     nat_gateway_id = "${module.vpc.ngw_id}"
   }
 
+  route {
+    cidr_block = "10.200.0.0/30"
+    network_interface_id = "eni-0fb67112acf4c0d31"
+  }
 
+  route {
+    cidr_block = "128.244.0.0/16"
+    gateway_id  = "igw-1367e66b"
+  }
+
+  route {
+    cidr_block = "192.168.4.0/24"
+    network_interface_id = "eni-0fb67112acf4c0d31"
+  }
+
+  
   tags {
-    Name = "Route traffic to NAT Gateway"
+    Name = "virtue-route-public-2b"
   }
 
 }
-
-//We do manual association on APL AWS since we have to integrate 
-//with APL routes. 
-
-/*
-resource "aws_route_table_association" "public_1a_routes" {
-    subnet_id = "${module.vpc.public_1a_id}"
-    route_table_id = "${aws_route_table.private_routes.id}"
-}
-*/
-
-
-/*resource "aws_route_table_association" "public_1a_routes" {
-  subnet_id = "${module.vpc.public_1a_id}"
-
-  //This rtb-4b141e37 is the virtue-rt that was created manually in 
-  //aws console. 
-  route_table_id = "rtb-4b141e37"
-
-  //route_table_id = "${aws_route_table.public_routes.id}"
-}
-*/
