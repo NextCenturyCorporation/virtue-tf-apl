@@ -17,6 +17,7 @@ resource "aws_route_table" "public_routes" {
 
 //This private route is used for our subnet since it cannot get 
 //directly to the interent. So we have to use a NAT getway. 
+/*
 resource "aws_route_table" "private_routes" {
   vpc_id = "${module.vpc.vpc_id}"
   route {
@@ -45,3 +46,4 @@ resource "aws_route_table" "private_routes" {
   }
 
 }
+*/

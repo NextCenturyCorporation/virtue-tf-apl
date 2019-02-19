@@ -2,105 +2,6 @@
 
 
 // !!!!!!!!!!!!!!!!Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
-resource "aws_instance" "twoSix_virtue_1a" {
-  ami           = "ami-093cccde92b4591ee"
-  instance_type = "m4.large"
-  key_name      = "twosix_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Sensor Monitor 1"
-  }
-
-
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-resource "aws_instance" "twoSix_virtue_2a" {
-  ami           = "ami-09844b7ecd22e9753"
-  instance_type = "m4.large"
-  key_name      = "twosix_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Sensor Monitor 2"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-resource "aws_instance" "twoSix_virtue_3a" {
-  ami           = "ami-09844b7ecd22e9753"
-  instance_type = "m4.large"
-  key_name      = "twosix_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}"]
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Sensor Monitor 3"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-
-resource "aws_instance" "twoSix_virtue_monitor_master" {
-  ami           = "ami-0f9cf087c1f27d9b1"
-  instance_type = "m4.2xlarge"
-  key_name      = "twosix_ec2"
-
-  subnet_id              = "${module.vpc.public_1a_id}"
-  vpc_security_group_ids = ["sg-fb7adab3", "sg-c1d38a88", "${aws_security_group.default_sg.id}", "${aws_security_group.virtue_internalports_dev_sg.id}"]
-
-  associate_public_ip_address = true
-  
-
-  root_block_device {
-    volume_type           = "gp2"
-    volume_size           = "120"
-    delete_on_termination = true
-  }
-
-  tags {
-    Name = "Sensing Monitor Master"
-  }
-
-
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
 
 
 resource "aws_instance" "twoSix_virtue_monitor_master2" {
@@ -111,8 +12,7 @@ resource "aws_instance" "twoSix_virtue_monitor_master2" {
   subnet_id              = "${module.vpc.public_1a_id}"
   vpc_security_group_ids = ["sg-fb7adab3", "sg-c1d38a88", "${aws_security_group.default_sg.id}", "${aws_security_group.virtue_internalports_dev_sg.id}"]
 
-  #associate_public_ip_address = true
-  
+  disable_api_termination = "true"  
 
   root_block_device {
     volume_type           = "gp2"
@@ -164,8 +64,8 @@ resource "aws_instance" "ncc_virtue-admin2" {
 }
 
 resource "aws_instance" "all-c5IntegrationInstanceTemp" {
-  ami           = "ami-00c5414b5cfc882d4"     
-  instance_type = "c5.large"
+  ami           = "ami-0d48c2470c8bdc875"     
+  instance_type = "t3.medium"
   key_name      = "virginiatech_ec2"
 
   #vpc_security_group_ids = ["sg-dd5104af"] 
@@ -181,7 +81,7 @@ resource "aws_instance" "all-c5IntegrationInstanceTemp" {
   }
 
   tags {
-    Name = "NCC Integration Configure domU - Wole"
+    Name = "NCC Xen Image Configure 4.18-Wole "
   }
 
   lifecycle {
@@ -276,6 +176,39 @@ resource "aws_instance" "ncc_virtue-adminworkbench" {
 
   tags {
     Name = "NCC Virtue Admin Workbench - Wole"
+  }
+}
+
+
+
+
+
+
+resource "aws_instance" "all-t3IntegrationDom0Instance_master" {
+
+  ami = "ami-0cba37c29a34aea81"
+  instance_type = "t3.medium"
+  key_name      = "virginiatech_ec2"
+
+   
+  subnet_id              = "${module.vpc.public_1a_id}"
+  vpc_security_group_ids = ["sg-0df52ca023344f1dc","sg-01fa789e839e9445e", "${aws_security_group.default_sg.id}", "${aws_security_group.virtue_internalports_dev_sg.id}", "${aws_security_group.virtue_testportforwarding_dev_sg.id}"]
+
+  iam_instance_profile     =      "S3FullAccess"
+  disable_api_termination  =     "true" 
+  root_block_device {
+    volume_type           = "gp2"
+    volume_size           = "120"
+    delete_on_termination = true
+  }
+
+  tags {
+    Name = "NCC Xen Image Configure - Wole"
+  }
+
+  lifecycle {
+    prevent_destroy = false
+    ignore_changes  = ["user_data"]
   }
 }
 
