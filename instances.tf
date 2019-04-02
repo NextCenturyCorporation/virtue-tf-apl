@@ -1,8 +1,4 @@
-
-
-
 // !!!!!!!!!!!!!!!!Sensor Monitor!!!!!!!!!!!!!!!!!!!!! 
-
 
 resource "aws_instance" "twoSix_virtue_monitor_master2" {
   ami           = "ami-0f9cf087c1f27d9b1"
@@ -31,7 +27,6 @@ resource "aws_instance" "twoSix_virtue_monitor_master2" {
   }
 }
 
-
 //!!!!!!!!!!!!!!!End of Sensor Monitor !!!!!!!!!!!!!!!!!!!!!!!!!
 
 // !!!!!!!!!!!!!!!!This is for Virtue BackEnd Administration!!!!!!!!!!!!!!!!!!!!! 
@@ -41,10 +36,6 @@ resource "aws_instance" "ncc_virtue-admin2" {
   key_name      = "vrtu"
 
   subnet_id = "${module.vpc.public_1a_id}"
-
-  //Note sg-c1d38a88 is the open-vpn security group created by APL. We need to add this manually. 
-  //not
-  #vpc_security_group_ids = ["sg-c1d38a88", "${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_admin_server_internal_sg.id}", "${ aws_security_group.virtue_admin_server_external_sg.id}"]
   
   vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}", "${aws_security_group.virtue_internalports_dev_sg.id}" ]
   iam_instance_profile = "SAVIOR_ADMIN_SERVER"
@@ -64,7 +55,7 @@ resource "aws_instance" "ncc_virtue-admin2" {
 }
 
 resource "aws_instance" "all-c5IntegrationInstanceTemp" {
-  ami           = "ami-0d48c2470c8bdc875"     
+  ami           = "ami-0f1f4100f5cc27c78"     
   instance_type = "t3.medium"
   key_name      = "virginiatech_ec2"
 
@@ -72,7 +63,6 @@ resource "aws_instance" "all-c5IntegrationInstanceTemp" {
   subnet_id              = "subnet-3171986d" #"${module.vpc.public_1a_id}"
   vpc_security_group_ids = ["sg-fb7adab3", "sg-c1d38a88", "${aws_security_group.default_sg.id}", "${aws_security_group.virtue_internalports_dev_sg.id}"]
 
-  #user_data = "${file("./user-data-files/generic_config.yaml")}"
   associate_public_ip_address = true
   root_block_device {
     volume_type           = "gp2"
@@ -81,7 +71,7 @@ resource "aws_instance" "all-c5IntegrationInstanceTemp" {
   }
 
   tags {
-    Name = "NCC Xen Image Configure 4.18-Wole "
+    Name = "NCC Xen Image Configure 4.18-owner "
   }
 
   lifecycle {
@@ -100,7 +90,7 @@ resource "aws_instance" "ncc_dev_win" {
   vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_twosix_dev_sg.id}", "${ aws_security_group.rdp_sg.id}", "${aws_security_group.virtue_VTinternalports_dev_sg.id}"]
 
   tags {
-    Name = "NCC Windows Dev Box - Wole"
+    Name = "NCC Windows Dev Box - owner"
   }
 
   lifecycle {
@@ -126,7 +116,7 @@ resource "aws_instance" "ncc_virtue-syslogredirect" {
   }
 
   tags {
-    Name = "NCC Virtue Syslog Redirect - Wole"
+    Name = "NCC Virtue Syslog Redirect - owner"
   }
 }
 
@@ -150,10 +140,9 @@ resource "aws_instance" "ncc_virtue_admin" {
   }
 
   tags {
-    Name = "NCC Virtue Admin with CIF - Wole"
+    Name = "NCC Virtue Admin with CIF - owner"
   }
 }
-
 
 resource "aws_instance" "ncc_virtue-adminworkbench" {
   ami           = "ami-0ac019f4fcb7cb7e6" 
@@ -162,11 +151,7 @@ resource "aws_instance" "ncc_virtue-adminworkbench" {
 
    
   subnet_id              = "${module.vpc.public_1a_id}"
-  #vpc_security_group_ids = ["${aws_security_group.default_sg.id}", "${ aws_security_group.virtue_internalports_dev_sg.id}", "${ aws_security_group.virtue_server_sg.id}"]
   vpc_security_group_ids = ["${aws_security_group.virtue_open_all.id}", "${aws_security_group.virtue_internalports_dev_sg.id}"]
-
-  //This EC2-SERVER-ADMIN iam role was created by hand. 
-  #iam_instance_profile =  "EC2-SERVER-ADMIN"
 
   root_block_device {
     volume_type           = "gp2"
@@ -175,14 +160,9 @@ resource "aws_instance" "ncc_virtue-adminworkbench" {
   }
 
   tags {
-    Name = "NCC Virtue Admin Workbench - Wole"
+    Name = "NCC Virtue Admin Workbench - owner"
   }
 }
-
-
-
-
-
 
 resource "aws_instance" "all-t3IntegrationDom0Instance_master" {
 
@@ -203,7 +183,7 @@ resource "aws_instance" "all-t3IntegrationDom0Instance_master" {
   }
 
   tags {
-    Name = "NCC Xen Image Configure - Wole"
+    Name = "NCC Xen Image Configure - owner"
   }
 
   lifecycle {
@@ -211,10 +191,6 @@ resource "aws_instance" "all-t3IntegrationDom0Instance_master" {
     ignore_changes  = ["user_data"]
   }
 }
-
-
-
-
 
 resource "aws_route53_record" "sensing-api" {
   zone_id = "${aws_route53_zone.savior.zone_id}"
@@ -241,19 +217,3 @@ resource "aws_route53_record" "sensing-kafka" {
 }
 
 //!!!!!!!!!!!!!!!!! End of TwoSix Instance !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-
-
-/*
-resource "aws_eip" "virtue_admin_eip" {
-  instance = "${aws_instance.ncc_virtue-admin.id}"
-  vpc      = true
-}
-*/
-
-
-/*
-resource "aws_iam_role" "ec2_s3_access_role" {
-  name               = "S3_ReadOnlyX"
-  assume_role_policy = 
-}
-*/

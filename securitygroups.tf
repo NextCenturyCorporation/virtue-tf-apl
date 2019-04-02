@@ -1,10 +1,7 @@
-//Virginia Tech IP = 128.173.92.62, 128.173.92.121
-//Wole's home = 71.179.60.142
-//Virginia office = 184.180.156.55/32,184.180.155.46/32
-//Jenkins Test server = 52.4.168.79/32
+
 
 locals {
-  default_cidr_blocks = ["128.244.87.129/32", "192.12.13.14/32", "192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "52.4.168.79/32", "184.180.156.55/32", "184.180.155.46/32", "174.200.9.240/32", "52.87.36.141/32", "52.20.65.94/32"]
+  default_cidr_blocks = ["111.111.111.111/32"]
 }
 
 resource "aws_security_group" "default_sg" {
@@ -541,8 +538,6 @@ resource "aws_security_group" "virtue_testportforwarding_dev_sg" {
     to_port   = 8001
     protocol  = "tcp"
 
-    //cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
-    //Temporary fix to get APL desktop working. Their ip 192.168.4.0  has an different external ip when it hits the virtue-xen box. 
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -566,9 +561,6 @@ resource "aws_security_group" "SshForwardPorts" {
     from_port = 8001
     to_port   = 8010
     protocol  = "tcp"
-
-    //cidr_blocks = ["192.168.4.0/24", "50.225.83.2/32", "69.251.215.247/32", "71.179.60.142/32", "128.173.92.62/32", "128.173.92.121/32", "50.226.4.6/32", "184.180.156.55/32", "184.180.155.46/32"]
-    //Temporary fix to get APL desktop working. Their ip 192.168.4.0  has an different external ip when it hits the virtue-xen box. 
     cidr_blocks = ["0.0.0.0/0"]
   }
 
